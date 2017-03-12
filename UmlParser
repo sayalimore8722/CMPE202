@@ -166,8 +166,20 @@ public class UmlParser {
                     	else if(ftype instanceof ReferenceType)
                     	{
                     		writer.println("Reference Type "+ftype);
+				String str=ftype.toString();
+                    		writer.println(str);
+                    		
                     		if (((ReferenceType) ftype).getType() instanceof ClassOrInterfaceType)
                     		{
+					if(str.contains("Collection"))
+                        		{
+                        			writer.println("One to many");
+                        		
+                        		}
+                    			else
+                    			{
+                    				writer.println("One to one");
+                    			}
                     			writer.println("Class Reference");
                     			List typeArgs = ((ClassOrInterfaceType) ((ReferenceType) ftype).getType()).getTypeArgs();
                     			writer.println(typeArgs);
