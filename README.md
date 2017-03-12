@@ -1,1 +1,1 @@
-# CMPE202
+UmlParser class currently parses and extracts all the information about a class,method,variable declarations and generates the grammer that is given  as a input to plant uml to generate Class Diagram.I have recently added a functionality to generate grammer for relationship between classes and working on the code to extend this functionality.
