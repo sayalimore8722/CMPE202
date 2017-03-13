@@ -20,10 +20,9 @@ import com.github.javaparser.ast.type.Type;
 
 public class UmlParser {
 	public static void main(String[] args) throws Exception {
-       
+        
         String srcfolder="D:\\umlparser\\uml-parser-test-1";
 		File folder=new File(srcfolder);
-		int i=0;
 		
 		 PrintWriter writer = new PrintWriter("D:\\Uml.txt", "UTF-8") ;
 		 writer.println("@startuml ");
@@ -34,33 +33,35 @@ public class UmlParser {
 				System.out.println("Processing File----->> "+fileobj.getName());
 				FileInputStream in=new FileInputStream(fileobj);
 				 CompilationUnit cu = JavaParser.parse(in);
-				 classParser(cu,writer,i);
-				 i++;
+				 classParser(cu,writer);
+				 
 				 variableParser(cu,writer);
 				 methodParser(cu,writer);
 				 writer.println("}");
 				 
 			}
 		}
-      
+        
 		writer.println("@enduml");
 		 writer.close();
+		
     }
 
-
 	
-	public static void classParser(CompilationUnit cu,PrintWriter writer,int k)
+	
+	
+	public static void classParser(CompilationUnit cu,PrintWriter writer)
 	{
 		int b=0;
 		HashMap<String,Object> classDeclarInfo=new HashMap<String,Object>();
 		HashMap<String,String> classorinterface=new HashMap<String,String>();
 			
-			int j=k;
+	
 			
 		for (TypeDeclaration types : cu.getTypes()) {
             if(types instanceof ClassOrInterfaceDeclaration)
             {
-            	System.out.println(j++);
+            	
             	int a=types.getModifiers();
             	if(a==1)
             		classorinterface.put("Access","public");
@@ -120,11 +121,6 @@ public class UmlParser {
             }
         }
 		
-		System.out.println(classorinterface.get("Access"));
-		System.out.println(classorinterface.get("ClassOrInterface"));
-		System.out.println(classDeclarInfo.get("Name"));
-		System.out.println(classDeclarInfo.get("Extended"));
-		System.out.println(classDeclarInfo.get("Implements"));
 	}
 	
 	public static void variableParser(CompilationUnit cu,PrintWriter writer)
@@ -154,7 +150,7 @@ public class UmlParser {
             				variabledec.put("VariableAccess","private");
                     		writer.print("- ");
             			}
-                       	//Get Variable Type for parsing relationship like Association
+                       	//Get Variable Type
                     	variabletype.put("VariableType",((FieldDeclaration) bvar).getType());
                     	Type ftype=((FieldDeclaration)bvar).getType();
                     	
@@ -166,12 +162,16 @@ public class UmlParser {
                     	else if(ftype instanceof ReferenceType)
                     	{
                     		writer.println("Reference Type "+ftype);
-				String str=ftype.toString();
+                    		String str=ftype.toString();
                     		writer.println(str);
+                    		
                     		
                     		if (((ReferenceType) ftype).getType() instanceof ClassOrInterfaceType)
                     		{
-					if(str.contains("Collection"))
+                    			writer.println("Class Reference");
+                    			List typeArgs = ((ClassOrInterfaceType) ((ReferenceType) ftype).getType()).getTypeArgs();
+             
+                    			if(str.contains("Collection"))
                         		{
                         			writer.println("One to many");
                         		
@@ -180,9 +180,7 @@ public class UmlParser {
                     			{
                     				writer.println("One to one");
                     			}
-                    			writer.println("Class Reference");
-                    			List typeArgs = ((ClassOrInterfaceType) ((ReferenceType) ftype).getType()).getTypeArgs();
-                    			writer.println(typeArgs);
+                    			
                     		}
                     	}
                     		
@@ -205,9 +203,7 @@ public class UmlParser {
             	}    	
             }
 		}
-		System.out.println(variabledec.get("VariableAccess"));
-		System.out.println(variabletype.get("VariableType"));
-		System.out.println(variabletype.get("VariableName"));
+		
 }
 	public static void methodParser(CompilationUnit cu,PrintWriter writer)
 	{
@@ -240,10 +236,9 @@ public class UmlParser {
             		
                 	methoddec.put("MethodName",((MethodDeclaration)bvar).getName());
                 	String mname=((MethodDeclaration)bvar).getName();
-                	System.out.println(mname+"-----------------------------------");
+                	
                 	if(!mname.equals("main"))
                 	{
-                	System.out.println("-----------------------------------");
                 	writer.print(((MethodDeclaration)bvar).getType());
                 	writer.print(" ");
                 	writer.print(mname);
@@ -256,9 +251,6 @@ public class UmlParser {
             }
 		}
 		
-		System.out.println(methoddec.get("MethodAccess"));
-		System.out.println(methoddec.get("MethodName"));
-		System.out.println(methodtype.get("MethodParameters"));
 		
 	}
 	
