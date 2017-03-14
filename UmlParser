@@ -33,9 +33,9 @@ public class UmlParser {
 				System.out.println("Processing File----->> "+fileobj.getName());
 				FileInputStream in=new FileInputStream(fileobj);
 				 CompilationUnit cu = JavaParser.parse(in);
-				 classParser(cu,writer);
+	           	 String src=classParser(cu,writer);
 				 
-				 variableParser(cu,writer);
+				 variableParser(cu,writer,src);
 				 methodParser(cu,writer);
 				 writer.println("}");
 				 
@@ -50,9 +50,10 @@ public class UmlParser {
 	
 	
 	
-	public static void classParser(CompilationUnit cu,PrintWriter writer)
+	public static String classParser(CompilationUnit cu,PrintWriter writer)
 	{
 		int b=0;
+		String srcClass=null;
 		HashMap<String,Object> classDeclarInfo=new HashMap<String,Object>();
 		HashMap<String,String> classorinterface=new HashMap<String,String>();
 			
@@ -83,6 +84,7 @@ public class UmlParser {
             	classDeclarInfo.put("Name",((ClassOrInterfaceDeclaration)types).getName());
             	classDeclarInfo.put("Extended",(((ClassOrInterfaceDeclaration)types).getExtends()));
             	classDeclarInfo.put("Implements",((ClassOrInterfaceDeclaration)types).getImplements());
+            	srcClass=((ClassOrInterfaceDeclaration)types).getName();
             	
             	//File Implements and Extends logic
             	
@@ -120,11 +122,12 @@ public class UmlParser {
             	}
             }
         }
-		
+		return srcClass;
 	}
 	
-	public static void variableParser(CompilationUnit cu,PrintWriter writer)
+	public static void variableParser(CompilationUnit cu,PrintWriter writer,String src)
 	{
+		String destClass=null;
 		HashMap<String,String> variabledec=new HashMap<String,String>();
 	
 		HashMap<String,Object> variabletype=new HashMap<String,Object>();
@@ -153,38 +156,6 @@ public class UmlParser {
                        	//Get Variable Type
                     	variabletype.put("VariableType",((FieldDeclaration) bvar).getType());
                     	Type ftype=((FieldDeclaration)bvar).getType();
-                    	
-                    	if(ftype instanceof PrimitiveType)
-                    	{
-                    		writer.println("Primitive Type "+ftype);
-                    	}
-                    	
-                    	else if(ftype instanceof ReferenceType)
-                    	{
-                    		writer.println("Reference Type "+ftype);
-                    		String str=ftype.toString();
-                    		writer.println(str);
-                    		
-                    		
-                    		if (((ReferenceType) ftype).getType() instanceof ClassOrInterfaceType)
-                    		{
-                    			writer.println("Class Reference");
-                    			List typeArgs = ((ClassOrInterfaceType) ((ReferenceType) ftype).getType()).getTypeArgs();
-             
-                    			if(str.contains("Collection"))
-                        		{
-                        			writer.println("One to many");
-                        		
-                        		}
-                    			else
-                    			{
-                    				writer.println("One to one");
-                    			}
-                    			
-                    		}
-                    	}
-                    		
-                    		//Get Variable Name
                     	FieldDeclaration var=(FieldDeclaration)bvar;
                     	List<VariableDeclarator> varlist=var.getVariables();
                     	
@@ -196,8 +167,43 @@ public class UmlParser {
                     			writer.print(((VariableDeclarator)vvar).getId());
                     			writer.print(":");
                     			writer.println(((FieldDeclaration) bvar).getType());
+                    			destClass=(((FieldDeclaration) bvar).getType()).toString();
                     		}
                     	}
+                    
+                    	if(ftype instanceof PrimitiveType || ftype.toString().contains("[]") || (ftype instanceof ReferenceType
+                				&& (ftype.toString().equals("String"))))
+                    	{
+                    		//writer.println("Primitive Type "+ftype);
+                    	}
+                    	
+                    	else if(ftype instanceof ReferenceType)
+                    	{
+                    		
+                    		String str=ftype.toString();
+                    		
+                    		
+                    		
+                    		if (((ReferenceType) ftype).getType() instanceof ClassOrInterfaceType)
+                    		{
+                    			//writer.println("Class Reference");
+                    			//List typeArgs = ((ClassOrInterfaceType) ((ReferenceType) ftype).getType()).getTypeArgs();
+             
+                    			if(str.contains("Collection"))
+                        		{
+                        			//writer.println("One to many");
+                            		String str1=str.replace("Collection<","");
+                            		String str2=str1.replace(">","");
+                            		writer.println("Class"+src+" "+"\"1\""+"--"+" \"many\" Class"+str2);
+                            		
+                        		}
+                    			
+                    			
+                    		}
+                    	}
+                    		
+                    		//Get Variable Name
+                    	
                     	
                     }
             	}    	
