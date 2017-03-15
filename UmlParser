@@ -179,8 +179,9 @@ public class UmlParser {
                     	
                     	else if(ftype instanceof ReferenceType)
                     	{
-                    		
+                    		//writer.println("Reference Type "+ftype);
                     		String str=ftype.toString();
+                    	
                     		
                     		
                     		
@@ -197,7 +198,11 @@ public class UmlParser {
                             		writer.println("Class"+src+" "+"\"1\""+"--"+" \"many\" Class"+str2);
                             		
                         		}
-                    			
+                    			else
+                    			{
+                    				
+                    				writer.println("Class"+src+" "+"\"1\""+"--"+"\"1\""+" Class"+destClass);
+                    			}
                     			
                     		}
                     	}
