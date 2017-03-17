@@ -1,5 +1,4 @@
 package com.codebind;
-
 import java.util.List;
 import java.io.File;
 import java.io.FileInputStream;
@@ -49,8 +48,6 @@ public class UmlParser {
 		
     }
 
-	
-	
 	
 	public static String classParser(CompilationUnit cu,PrintWriter writer)
 	{
@@ -170,45 +167,31 @@ public class UmlParser {
                     			writer.print(((VariableDeclarator)vvar).getId());
                     			writer.print(":");
                     			writer.println(((FieldDeclaration) bvar).getType());
-                    			//destClass=(((FieldDeclaration) bvar).getType()).toString();
                     		}
-                    	}
-                    
-                    	if(ftype instanceof PrimitiveType || ftype.toString().contains("[]") || (ftype instanceof ReferenceType
-                				&& (ftype.toString().equals("String"))))
-                    	{
-                    		//writer.println("Primitive Type "+ftype);
-                    	}
-                    	
-                    	else if(ftype instanceof ReferenceType)
-                    	{
-                    		String str=ftype.toString();
-                    		
-                    		if (((ReferenceType) ftype).getType() instanceof ClassOrInterfaceType)
-                    		{
-                    			
-             
-                    			if(str.contains("Collection"))
+                    		else if(ftype instanceof ReferenceType)
+                        	{
+                        		String str=ftype.toString();
+                        		
+                        		if (((ReferenceType) ftype).getType() instanceof ClassOrInterfaceType)
                         		{
+                        			if(str.contains("Collection"))
+                            		{
+                            			
+                                		String str1=str.replace("Collection<","");
+                                		String str2=str1.replace(">","");
+                                		writer.println(src+" "+"\"1\""+"--"+" \"many\" "+str2);
+                                		
+                            		}
+                        			else
+                        			{
+                        				
+                        				writer.println(src+" "+"\"1\""+"--"+"\"1\" "+destClass);
+                        			}
                         			
-                            		String str1=str.replace("Collection<","");
-                            		String str2=str1.replace(">","");
-                            		writer.println(src+" "+"\"1\""+"--"+" \"many\" "+str2);
-                            		
+                        			
                         		}
-                    			else
-                    			{
-                    				
-                    				writer.println(src+" "+"\"1\""+"--"+"\"1\" "+destClass);
-                    			}
-                    			
-                    			
-                    		}
-                    	}
-                    		
-                    		//Get Variable Name
-                    	
-                    	
+                        	}
+                    	} 	
                     }
             	}    	
             }
