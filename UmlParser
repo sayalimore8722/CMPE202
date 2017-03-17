@@ -35,11 +35,10 @@ public class UmlParser {
 				 CompilationUnit cu = JavaParser.parse(in);
 	           	 String src=classParser(cu,writer);
 				 
-				 variableParser(cu,writer,src);
+				 String rel_str=variableParser(cu,writer,src);
 				 methodParser(cu,writer);
 				 writer.println("}");
-				 
-				 
+				 writer.println(rel_str);
 			}
 		}
         
@@ -124,12 +123,14 @@ public class UmlParser {
 		return srcClass;
 	}
 	
-	public static void variableParser(CompilationUnit cu,PrintWriter writer,String src)
+	public static String variableParser(CompilationUnit cu,PrintWriter writer,String src)
 	{
 		String destClass=null;
+		String relation_str="";
+		
 		HashMap<String,String> variabledec=new HashMap<String,String>();
-	
 		HashMap<String,Object> variabletype=new HashMap<String,Object>();
+		
 		for (TypeDeclaration types : cu.getTypes()) {
 			if(types instanceof ClassOrInterfaceDeclaration)
             {
@@ -180,13 +181,14 @@ public class UmlParser {
                             			
                                 		String str1=str.replace("Collection<","");
                                 		String str2=str1.replace(">","");
-                                		writer.println(src+" "+"\"1\""+"--"+" \"many\" "+str2);
-                                		
+                                		//writer.println(src+" "+"\"1\""+"--"+" \"many\" "+str2);
+                                		relation_str+=src+" "+"\"1\""+"--"+" \"many\" "+str2+System.lineSeparator();
                             		}
                         			else
                         			{
                         				
-                        				writer.println(src+" "+"\"1\""+"--"+"\"1\" "+destClass);
+                        				//writer.println(src+" "+"\"1\""+"--"+"\"1\" "+destClass);
+                        				relation_str+=src+" "+"\"1\""+"--"+"\"1\" "+destClass+System.lineSeparator();
                         			}
                         			
                         			
@@ -197,6 +199,7 @@ public class UmlParser {
             	}    	
             }
 		}
+		return relation_str;
 		
 }
 	public static void methodParser(CompilationUnit cu,PrintWriter writer)
