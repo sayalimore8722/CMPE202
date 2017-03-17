@@ -142,16 +142,7 @@ public class UmlParser {
             			//Get Variable Access Specifier
             			int a=((FieldDeclaration) bvar).getModifiers();
             			
-            			if(a==1)
-            			{
-                    		variabledec.put("VariableAccess","public");
-            				writer.print("+");
-            			}
-            			else if(a==2)
-            			{
-            				variabledec.put("VariableAccess","private");
-                    		writer.print("- ");
-            			}
+            			
                        	//Get Variable Type
                     	variabletype.put("VariableType",((FieldDeclaration) bvar).getType());
                     	Type ftype=((FieldDeclaration)bvar).getType();
@@ -163,6 +154,16 @@ public class UmlParser {
                     		destClass=(((FieldDeclaration) bvar).getType()).toString();
                     		if((vvar instanceof VariableDeclarator && !(ftype instanceof ReferenceType)) || ftype.toString().contains("[]"))
                     		{
+                    			if(a==1)
+                    			{
+                            		variabledec.put("VariableAccess","public");
+                    				writer.print("+");
+                    			}
+                    			else if(a==2)
+                    			{
+                    				variabledec.put("VariableAccess","private");
+                            		writer.print("- ");
+                    			}
                     			variabletype.put("VariableName",((VariableDeclarator)vvar).getId());
                     			writer.print(((VariableDeclarator)vvar).getId());
                     			writer.print(":");
