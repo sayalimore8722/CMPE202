@@ -256,12 +256,13 @@ public class UmlParser {
 	}
 	private static ArrayList getEnumerationTypes(CompilationUnit cu) {
 	    ArrayList enumList = new ArrayList();
-	      TypeDeclaration typeDec = null;
+	     
+	      for (TypeDeclaration typeDec : cu.getTypes()) {
 			if(typeDec instanceof EnumDeclaration)
 	        {
 	            enumList.add(typeDec.getName());
 	        }
-	   
+	      }
 	    return enumList;
 	}
 	
