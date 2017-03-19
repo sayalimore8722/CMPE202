@@ -25,7 +25,8 @@ public class UmlParser {
         
         String srcfolder="D:\\umlparser\\uml-parser-test-1";
 		File folder=new File(srcfolder);
-		
+		HashMap<String, ArrayList> manyRelationship = new HashMap<String, ArrayList>();
+        HashMap<String, ArrayList> oneRelationship = new HashMap<String, ArrayList>();	
 		 PrintWriter writer = new PrintWriter("D:\\Uml.txt", "UTF-8") ;
 		 PrintWriter grammerWriter=new PrintWriter("D:\\grammer.txt","UTF-8");
 		 writer.println("@startuml ");
