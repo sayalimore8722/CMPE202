@@ -21,12 +21,12 @@ import com.github.javaparser.ast.type.ReferenceType;
 import com.github.javaparser.ast.type.Type;
 
 public class UmlParser {
+	private static int relvariable = 0;
 	public static void main(String[] args) throws Exception {
-        
+      
         String srcfolder="D:\\umlparser\\uml-parser-test-1";
 		File folder=new File(srcfolder);
-		HashMap<String, ArrayList> manyRelationship = new HashMap<String, ArrayList>();
-        HashMap<String, ArrayList> oneRelationship = new HashMap<String, ArrayList>();	
+	
 		 PrintWriter writer = new PrintWriter("D:\\Uml.txt", "UTF-8") ;
 		 PrintWriter grammerWriter=new PrintWriter("D:\\grammer.txt","UTF-8");
 		 writer.println("@startuml ");
@@ -38,7 +38,7 @@ public class UmlParser {
 				FileInputStream in=new FileInputStream(fileobj);
 				 CompilationUnit cu = JavaParser.parse(in);
 	           	 String src=classParser(cu,writer);
-				 getEnumerationTypes(cu);
+				
 				 String rel_str=variableParser(cu,writer,src);
 				 methodParser(cu,writer);
 				 writer.println("}");
@@ -138,6 +138,7 @@ public class UmlParser {
 		for (TypeDeclaration types : cu.getTypes()) {
 			if(types instanceof ClassOrInterfaceDeclaration)
             {
+				String[] relation=new String[50];
             	ClassOrInterfaceDeclaration classv=(ClassOrInterfaceDeclaration)types;
             	List<BodyDeclaration> list1=classv.getMembers();
             	for(BodyDeclaration bvar:list1)
@@ -187,12 +188,13 @@ public class UmlParser {
                                 		String str2=str1.replace(">","");
                                 		//writer.println(src+" "+"\"1\""+"--"+" \"many\" "+str2);
                                 		relation_str+=src+" "+"\"1\""+"--"+" \"many\" "+str2+System.lineSeparator();
+                                		relation[relvariable]=src+str2;
                             		}
                         			else
                         			{
-                        				
                         				//writer.println(src+" "+"\"1\""+"--"+"\"1\" "+destClass);
                         				relation_str+=src+" "+"\"1\""+"--"+"\"1\" "+destClass+System.lineSeparator();
+                        				relation[relvariable]=src+destClass;
                         			}
                         			
                         			
@@ -203,6 +205,7 @@ public class UmlParser {
             	}    	
             }
 		}
+		relvariable=relvariable+1;
 		return relation_str;
 		
 }
@@ -252,20 +255,9 @@ public class UmlParser {
             	}
             }
 		}
-		
-		
+			
 	}
-	private static ArrayList getEnumerationTypes(CompilationUnit cu) {
-	    ArrayList enumList = new ArrayList();
-	     
-	      for (TypeDeclaration typeDec : cu.getTypes()) {
-			if(typeDec instanceof EnumDeclaration)
-	        {
-	            enumList.add(typeDec.getName());
-	        }
-	      }
-	    return enumList;
-	}
+	
 	
 }
 
