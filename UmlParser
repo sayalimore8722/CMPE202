@@ -25,7 +25,7 @@ public class UmlParser {
 	private static int relvariable = 0;
 	public static void main(String[] args) throws Exception {
       
-        String srcfolder="D:\\umlparser\\uml-parser-test-1";
+        String srcfolder="D:\\umlparser\\uml-parser-test-2";
 		File folder=new File(srcfolder);
 	
 		 PrintWriter writer = new PrintWriter("D:\\Uml.txt", "UTF-8") ;
@@ -130,10 +130,11 @@ public class UmlParser {
 	
 	public static String variableParser(CompilationUnit cu,PrintWriter writer,String src)
 	{
-		String destClass=null;
+		String destClass="";
 		String relation_str="";
-		String forArray=null,forArray1=null;
-		
+		String forArray="",forArray1="";
+		String collect_relation_str="",instance_relation_str="";
+		int flag=0;
 		HashMap<String,String> variabledec=new HashMap<String,String>();
 		HashMap<String,Object> variabletype=new HashMap<String,Object>();
 		
@@ -189,8 +190,9 @@ public class UmlParser {
                             			
                                 		String str1=str.replace("Collection<","");
                                 		String str2=str1.replace(">","");
-                                	
-                                		relation_str+=src+" "+"\"1\""+"--"+" \"many\" "+str2+System.lineSeparator();
+                                	 
+                                		collect_relation_str+=src+" "+"\"1\""+"--"+" \"many\" "+str2+System.lineSeparator();
+                                		System.out.println(collect_relation_str);
                                 		forArray=src+str2;
                                 		forArray1=str2+src;
                                 		System.out.println(forArray);
@@ -199,13 +201,13 @@ public class UmlParser {
                             		}
                         			else
                         			{
-                        				relation_str+=src+" "+"\"1\""+"--"+"\"1\" "+destClass+System.lineSeparator();
+                        				collect_relation_str+=src+" "+"\"1\""+"--"+"\"1\" "+destClass+System.lineSeparator();
+                        				System.out.println(collect_relation_str);
                         				forArray=src+destClass;
                         				forArray1=destClass+src;
                         				System.out.println(forArray);
                                 		System.out.println(forArray1);
-                                		
-                        				
+                                			
                         			}
                         			if(relation.contains(forArray) || relation.contains(forArray1))
                         			{
@@ -213,7 +215,10 @@ public class UmlParser {
                         			}
                         			else
                         			{
-                        				System.out.println("Hello i am not in");	
+                        				System.out.println("Hello i am not in");
+                        				
+                        					relation_str=collect_relation_str;
+                        				
                         			}
                         			relation.add(forArray);
                         			relation.add(forArray1);
