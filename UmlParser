@@ -21,6 +21,7 @@ import com.github.javaparser.ast.type.ReferenceType;
 import com.github.javaparser.ast.type.Type;
 
 public class UmlParser {
+	public static ArrayList<String> relation=new ArrayList<String>();
 	private static int relvariable = 0;
 	public static void main(String[] args) throws Exception {
       
@@ -131,6 +132,7 @@ public class UmlParser {
 	{
 		String destClass=null;
 		String relation_str="";
+		String forArray=null,forArray1=null;
 		
 		HashMap<String,String> variabledec=new HashMap<String,String>();
 		HashMap<String,Object> variabletype=new HashMap<String,Object>();
@@ -138,7 +140,7 @@ public class UmlParser {
 		for (TypeDeclaration types : cu.getTypes()) {
 			if(types instanceof ClassOrInterfaceDeclaration)
             {
-				String[] relation=new String[50];
+				
             	ClassOrInterfaceDeclaration classv=(ClassOrInterfaceDeclaration)types;
             	List<BodyDeclaration> list1=classv.getMembers();
             	for(BodyDeclaration bvar:list1)
@@ -181,22 +183,40 @@ public class UmlParser {
                         		
                         		if (((ReferenceType) ftype).getType() instanceof ClassOrInterfaceType)
                         		{
+                        			
                         			if(str.contains("Collection"))
                             		{
                             			
                                 		String str1=str.replace("Collection<","");
                                 		String str2=str1.replace(">","");
-                                		//writer.println(src+" "+"\"1\""+"--"+" \"many\" "+str2);
+                                	
                                 		relation_str+=src+" "+"\"1\""+"--"+" \"many\" "+str2+System.lineSeparator();
-                                		relation[relvariable]=src+str2;
+                                		forArray=src+str2;
+                                		forArray1=str2+src;
+                                		System.out.println(forArray);
+                                		System.out.println(forArray1);
+                                		
                             		}
                         			else
                         			{
-                        				//writer.println(src+" "+"\"1\""+"--"+"\"1\" "+destClass);
                         				relation_str+=src+" "+"\"1\""+"--"+"\"1\" "+destClass+System.lineSeparator();
-                        				relation[relvariable]=src+destClass;
+                        				forArray=src+destClass;
+                        				forArray1=destClass+src;
+                        				System.out.println(forArray);
+                                		System.out.println(forArray1);
+                                		
+                        				
                         			}
-                        			
+                        			if(relation.contains(forArray) || relation.contains(forArray1))
+                        			{
+                        				System.out.println("Hello i am in");
+                        			}
+                        			else
+                        			{
+                        				System.out.println("Hello i am not in");	
+                        			}
+                        			relation.add(forArray);
+                        			relation.add(forArray1);
                         			
                         		}
                         	}
