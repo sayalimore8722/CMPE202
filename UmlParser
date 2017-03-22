@@ -26,12 +26,13 @@ public class UmlParser {
 	private static int relvariable = 0;
 	public static void main(String[] args) throws Exception {
       
-        String srcfolder="D:\\umlparser\\uml-parser-test-2";
+        String srcfolder="D:\\umlparser\\uml-parser-test-3";
 		File folder=new File(srcfolder);
 	
 		 PrintWriter writer = new PrintWriter("D:\\Uml.txt", "UTF-8") ;
 		 PrintWriter grammerWriter=new PrintWriter("D:\\grammer.txt","UTF-8");
 		 writer.println("@startuml ");
+		 writer.println("skinparam classAttributeIconSize 0");
 		for(File fileobj:folder.listFiles())
 		{
 			if(fileobj.getName().endsWith(".java"))
@@ -163,7 +164,7 @@ public class UmlParser {
                     	for(VariableDeclarator vvar:varlist)
                     	{
                     		destClass=(((FieldDeclaration) bvar).getType()).toString();
-                    		if((vvar instanceof VariableDeclarator && !(ftype instanceof ReferenceType)) || ftype.toString().contains("[]"))
+                    		if((vvar instanceof VariableDeclarator && !(ftype instanceof ReferenceType)) || ftype.toString().contains("[]") || ftype.toString().contains("String"))
                     		{
                     			if(a==1)
                     			{
@@ -274,15 +275,16 @@ public class UmlParser {
                 	writer.print(((MethodDeclaration)bvar).getType());
                 	writer.print(" ");
                 	writer.print(mname);
-    				writer.println("()");
+    				writer.print("(");
     				methodtype.put("MethodParameters",((MethodDeclaration)bvar).getParameters());
-    				System.out.println("MethodParameters"+((MethodDeclaration)bvar).getParameters());
     				List<Parameter> methodpara=((MethodDeclaration)bvar).getParameters();
+    				writer.print(((MethodDeclaration)bvar).getParameters().toString().replace(" ",":").replace("[","").replace("]",""));
+    				writer.println(")");
     				for(Parameter para:methodpara)
     				{
-    				
+    					
     					Type parav=para.getType();
-    					if(parav instanceof ReferenceType)
+    					if(parav instanceof ReferenceType && !(parav.toString().contains("String")))
     					{
     						
     						if(((ReferenceType) parav).getType() instanceof ClassOrInterfaceType)
