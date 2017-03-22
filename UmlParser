@@ -13,6 +13,7 @@ import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.EnumDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
@@ -41,9 +42,10 @@ public class UmlParser {
 	           	 String src=classParser(cu,writer);
 				
 				 String rel_str=variableParser(cu,writer,src);
-				 methodParser(cu,writer);
+				 String dependency=methodParser(cu,writer,src);
 				 writer.println("}");
 				 writer.println(rel_str);
+				 writer.println(dependency);
 			}
 		}
         
@@ -230,14 +232,14 @@ public class UmlParser {
             	}    	
             }
 		}
-		relvariable=relvariable+1;
 		return relation_str;
 		
 }
-	public static void methodParser(CompilationUnit cu,PrintWriter writer)
+	public static String methodParser(CompilationUnit cu,PrintWriter writer,String src)
 	{
 		HashMap<String,String> methoddec=new HashMap<String,String>();
 		HashMap<String,Object> methodtype=new HashMap<String,Object>();
+		String dependency="";
 		
 		for (TypeDeclaration types : cu.getTypes()) {
 			if(types instanceof ClassOrInterfaceDeclaration)
@@ -274,12 +276,29 @@ public class UmlParser {
                 	writer.print(mname);
     				writer.println("()");
     				methodtype.put("MethodParameters",((MethodDeclaration)bvar).getParameters());
+    				System.out.println("MethodParameters"+((MethodDeclaration)bvar).getParameters());
+    				List<Parameter> methodpara=((MethodDeclaration)bvar).getParameters();
+    				for(Parameter para:methodpara)
+    				{
+    				
+    					Type parav=para.getType();
+    					if(parav instanceof ReferenceType)
+    					{
+    						
+    						if(((ReferenceType) parav).getType() instanceof ClassOrInterfaceType)
+    						{
+    							
+    							dependency=src+"\"uses\" ..>"+para.getType();
+    						}
+    					}
+    				}
                 	}
     				
             		}
             	}
             }
 		}
+		return dependency;
 			
 	}
 	
