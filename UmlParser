@@ -23,6 +23,7 @@ import com.github.javaparser.ast.type.Type;
 
 public class UmlParser {
 	public static ArrayList<String> relation=new ArrayList<String>();
+	public static ArrayList<String> variables=new ArrayList<String>();
 	private static int relvariable = 0;
 	public static void main(String[] args) throws Exception {
       
@@ -139,7 +140,7 @@ public class UmlParser {
 		int flag=0;
 		HashMap<String,String> variabledec=new HashMap<String,String>();
 		HashMap<String,Object> variabletype=new HashMap<String,Object>();
-		ArrayList<String> variables=new ArrayList<String>();
+		
 		
 		for (TypeDeclaration types : cu.getTypes()) {
 			if(types instanceof ClassOrInterfaceDeclaration)
@@ -172,19 +173,29 @@ public class UmlParser {
                             		variabledec.put("VariableAccess","public");
                     				writer.print("+");
                     				access="public";
+                    				variabletype.put("VariableName",((VariableDeclarator)vvar).getId());
+                        			writer.print(((VariableDeclarator)vvar).getId());
+                        			writer.print(":");
+                        			writer.println(((FieldDeclaration) bvar).getType());
                     			}
                     			else if(a==2)
                     			{
                     				variabledec.put("VariableAccess","private");
                             		writer.print("- ");
                             		access="private";
+                            		variabletype.put("VariableName",((VariableDeclarator)vvar).getId());
+                        			writer.print(((VariableDeclarator)vvar).getId());
+                        			writer.print(":");
+                        			writer.println(((FieldDeclaration) bvar).getType());
                     			}
-                    			variabletype.put("VariableName",((VariableDeclarator)vvar).getId());
-                    			writer.print(((VariableDeclarator)vvar).getId());
-                    			writer.print(":");
-                    			writer.println(((FieldDeclaration) bvar).getType());
+                    			
                     			access=access+" "+((FieldDeclaration) bvar).getType()+" "+((VariableDeclarator)vvar).getId();
                     			System.out.println("Access----------------"+access);
+                    			variables.add(access);
+                    			for(String s:variables)
+                    			{
+                    				System.out.println("List-------"+s);
+                    			}
                     		}
                     		else if(ftype instanceof ReferenceType)
                         	{
@@ -249,16 +260,18 @@ public class UmlParser {
 				List<BodyDeclaration> list1=classv.getMembers();
             	for(BodyDeclaration bvar:list1)
             	{
+            		
             		if(bvar instanceof MethodDeclaration)
             		{
             		int a=((MethodDeclaration)bvar).getModifiers();
-            		if(a==1)
+            		String mname=((MethodDeclaration)bvar).getName();
+            		if(a==1 && !mname.contains("get") && !mname.contains("set"))
             		{
                 		methoddec.put("MethodAccess","public");
             			writer.print("+ ");
             		}
           
-            		else if(a==2)
+            		else if(a==2 && !mname.contains("get") && !mname.contains("set"))
             		{
                 		methoddec.put("MethodAccess","private");
                 		writer.print("- ");
@@ -267,9 +280,9 @@ public class UmlParser {
             		
             		
                 	methoddec.put("MethodName",((MethodDeclaration)bvar).getName());
-                	String mname=((MethodDeclaration)bvar).getName();
                 	
-                	if(!mname.equals("main"))
+                	
+                	if(!mname.equals("main") && !mname.contains("get") && !mname.contains("set"))
                 	{
                 	writer.print(((MethodDeclaration)bvar).getType());
                 	writer.print(" ");
