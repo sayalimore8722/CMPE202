@@ -41,7 +41,6 @@ public class UmlParser {
 				FileInputStream in=new FileInputStream(fileobj);
 				 CompilationUnit cu = JavaParser.parse(in);
 	           	 String src=classParser(cu,writer);
-				
 				 String rel_str=variableParser(cu,writer,src);
 				 String dependency=methodParser(cu,writer,src);
 				 writer.println("}");
@@ -140,6 +139,7 @@ public class UmlParser {
 		int flag=0;
 		HashMap<String,String> variabledec=new HashMap<String,String>();
 		HashMap<String,Object> variabletype=new HashMap<String,Object>();
+		ArrayList<String> variables=new ArrayList<String>();
 		
 		for (TypeDeclaration types : cu.getTypes()) {
 			if(types instanceof ClassOrInterfaceDeclaration)
@@ -151,6 +151,7 @@ public class UmlParser {
             	{
             		if(bvar instanceof FieldDeclaration)
             		{
+            			String access="";
             			//Get Variable Access Specifier
             			int a=((FieldDeclaration) bvar).getModifiers();
             			
@@ -170,16 +171,20 @@ public class UmlParser {
                     			{
                             		variabledec.put("VariableAccess","public");
                     				writer.print("+");
+                    				access="public";
                     			}
                     			else if(a==2)
                     			{
                     				variabledec.put("VariableAccess","private");
                             		writer.print("- ");
+                            		access="private";
                     			}
                     			variabletype.put("VariableName",((VariableDeclarator)vvar).getId());
                     			writer.print(((VariableDeclarator)vvar).getId());
                     			writer.print(":");
                     			writer.println(((FieldDeclaration) bvar).getType());
+                    			access=access+" "+((FieldDeclaration) bvar).getType()+" "+((VariableDeclarator)vvar).getId();
+                    			System.out.println("Access----------------"+access);
                     		}
                     		else if(ftype instanceof ReferenceType)
                         	{
@@ -212,17 +217,11 @@ public class UmlParser {
                                 		System.out.println(forArray1);
                                 			
                         			}
-                        			if(relation.contains(forArray) || relation.contains(forArray1))
+                        			if(!(relation.contains(forArray)) || !(relation.contains(forArray1)))
                         			{
-                        				System.out.println("Hello i am in");
+                        				relation_str=collect_relation_str;
                         			}
-                        			else
-                        			{
-                        				System.out.println("Hello i am not in");
-                        				
-                        					relation_str=collect_relation_str;
-                        				
-                        			}
+                        			
                         			relation.add(forArray);
                         			relation.add(forArray1);
                         			
