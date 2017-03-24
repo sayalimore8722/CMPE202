@@ -133,6 +133,7 @@ public class UmlParser {
 	
 	public static String variableParser(CompilationUnit cu,PrintWriter writer,String src)
 	{
+		ArrayList<String> mname=new ArrayList<String>();
 		String destClass="";
 		String relation_str="";
 		String forArray="",forArray1="";
@@ -150,6 +151,14 @@ public class UmlParser {
             	List<BodyDeclaration> list1=classv.getMembers();
             	for(BodyDeclaration bvar:list1)
             	{
+            		
+            		if(bvar instanceof MethodDeclaration)
+            		{
+            			mname.add(((MethodDeclaration)bvar).getName());
+            			
+            		}
+            		
+            		
             		if(bvar instanceof FieldDeclaration)
             		{
             			String access="";
@@ -181,12 +190,23 @@ public class UmlParser {
                     			else if(a==2)
                     			{
                     				variabledec.put("VariableAccess","private");
-                            		writer.print("- ");
+                            		
                             		access="private";
+                            		
+                            		
+                            		if((mname.contains("get") || mname.contains("set")) && (mname.contains(((VariableDeclarator)vvar).getId().toString())))
+                            		{
+                            			writer.print("+ ");
+                            		}
+                            		else
+                            		{
+                            			writer.print("- ");	
+                            		}
                             		variabletype.put("VariableName",((VariableDeclarator)vvar).getId());
                         			writer.print(((VariableDeclarator)vvar).getId());
                         			writer.print(":");
                         			writer.println(((FieldDeclaration) bvar).getType());
+                            	    
                     			}
                     			
                     			access=access+" "+((FieldDeclaration) bvar).getType()+" "+((VariableDeclarator)vvar).getId();
@@ -196,6 +216,7 @@ public class UmlParser {
                     			{
                     				System.out.println("List-------"+s);
                     			}
+                
                     		}
                     		else if(ftype instanceof ReferenceType)
                         	{
@@ -241,7 +262,7 @@ public class UmlParser {
                     	} 	
                     }
             	}    	
-            }
+		}
 		}
 		return relation_str;
 		
