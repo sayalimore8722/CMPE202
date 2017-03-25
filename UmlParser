@@ -51,7 +51,7 @@ public class UmlParser {
 		}
         
 		writer.println("@enduml");
-		 writer.close();
+		writer.close();
 		
     }
 
@@ -126,6 +126,9 @@ public class UmlParser {
             		writer.print(classDeclarInfo.get("Name"));
                 	writer.println("{");
             	}
+            	ClassOrInterfaceDeclaration classv=(ClassOrInterfaceDeclaration)types;
+            	List<BodyDeclaration> list1=classv.getMembers();
+            	
             }
         }
 		return srcClass;
@@ -192,10 +195,14 @@ public class UmlParser {
                     				variabledec.put("VariableAccess","private");
                             		
                             		access="private";
-                            		
-                            		
-                            		if((mname.contains("get") || mname.contains("set")) && (mname.contains(((VariableDeclarator)vvar).getId().toString())))
+                            		System.out.println("Hello1");
+                            		for(String mname1:mname)
                             		{
+                            			System.out.println("Hello2");	
+                            		if((mname1.contains("get") || mname1.contains("set")) && (mname1.contains(((VariableDeclarator)vvar).getId().toString())))
+                            		{
+                            			System.out.println("Hello3");
+                            			System.out.println("get"+(mname.contains(((VariableDeclarator)vvar).getId().toString()))+"----------"+mname1);
                             			writer.print("+ ");
                             		}
                             		else
@@ -206,7 +213,7 @@ public class UmlParser {
                         			writer.print(((VariableDeclarator)vvar).getId());
                         			writer.print(":");
                         			writer.println(((FieldDeclaration) bvar).getType());
-                            	    
+                            		}
                     			}
                     			
                     			access=access+" "+((FieldDeclaration) bvar).getType()+" "+((VariableDeclarator)vvar).getId();
