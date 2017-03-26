@@ -27,7 +27,7 @@ public class UmlParser {
 	private static int relvariable = 0;
 	public static void main(String[] args) throws Exception {
       
-        String srcfolder="D:\\umlparser\\uml-parser-test-1";
+        String srcfolder="D:\\umlparser\\uml-parser-test-3";
 		File folder=new File(srcfolder);
 	
 		 PrintWriter writer = new PrintWriter("D:\\Uml.txt", "UTF-8") ;
@@ -168,7 +168,6 @@ public class UmlParser {
             			//Get Variable Access Specifier
             			int a=((FieldDeclaration) bvar).getModifiers();
             			
-            			
                        	//Get Variable Type
                     	variabletype.put("VariableType",((FieldDeclaration) bvar).getType());
                     	Type ftype=((FieldDeclaration)bvar).getType();
@@ -198,7 +197,11 @@ public class UmlParser {
                             		System.out.println("Hello1");
                             		for(String mname1:mname)
                             		{
-                            			System.out.println("Hello2");	
+                            			System.out.println("Hello2");
+                            			if (mname1.equalsIgnoreCase(mname1)) {
+                							Boolean hasGetter = true;
+                							mname.add("getter");
+                						}
                             		if((mname1.contains("get") || mname1.contains("set")) && (mname1.contains(((VariableDeclarator)vvar).getId().toString())))
                             		{
                             			System.out.println("Hello3");
