@@ -141,6 +141,7 @@ public class UmlParser {
 		String relation_str="";
 		String forArray="",forArray1="";
 		String collect_relation_str="",instance_relation_str="";
+		boolean getflag=false,setflag=false;
 		int flag=0;
 		HashMap<String,String> variabledec=new HashMap<String,String>();
 		HashMap<String,Object> variabletype=new HashMap<String,Object>();
@@ -154,13 +155,14 @@ public class UmlParser {
             	List<BodyDeclaration> list1=classv.getMembers();
             	for(BodyDeclaration bvar:list1)
             	{
-            		
             		if(bvar instanceof MethodDeclaration)
             		{
             			mname.add(((MethodDeclaration)bvar).getName());
             			
             		}
-            		
+            	}
+            	for(BodyDeclaration bvar:list1)
+            	{
             		
             		if(bvar instanceof FieldDeclaration)
             		{
@@ -195,18 +197,64 @@ public class UmlParser {
                             		
                             		access="private";
                             		System.out.println("Hello1");
-                            		for(String mname1:mname)
+                            		System.out.println((((VariableDeclarator)vvar).getId()));
+                            		String get="get"+(((VariableDeclarator)vvar).getId());
+                        			String set="set"+(((VariableDeclarator)vvar).getId());
+                        			System.out.println(get+"--------------"+set);
+                        			
+                        			for(String mname1:mname)
+                            		{
+                        				System.out.println("Lowercase"+(mname1.toLowerCase()));
+                        				String lower=(mname1.toLowerCase());
+                            		 if(get.compareToIgnoreCase(mname1)==0)
+                            		 {
+                            		     System.out.println("get");
+                            		     getflag=true;
+                            		 }
+                            		 else
+                            		 {
+                            			  System.out.println("notget");
+                            		 }
+                            		}
+                        			for(String mname1:mname)
+                            		{
+                        				System.out.println("Lowercase"+(mname1.toLowerCase()));
+                        				String lower=(mname1.toLowerCase());
+                        				if(set.compareToIgnoreCase(mname1)==0)
+                               		 {
+                            			 System.out.println("set");
+                            			 setflag=true;
+                            		 }
+                               		else
+                               		{
+                           			  System.out.println("notset");
+                               		}
+
+                            		}
+                        			
+                        			
+                        			
+                            			
+                            		/*for(String mname1:mname)
                             		{
                             			System.out.println("Hello2");
-                            			if (mname1.equalsIgnoreCase(mname1)) {
-                							Boolean hasGetter = true;
-                							mname.add("getter");
-                						}
-                            		if((mname1.contains("get") || mname1.contains("set")) && (mname1.contains(((VariableDeclarator)vvar).getId().toString())))
+                            			System.out.println(mname);*/
+                            			
+                            		/*if((mname1.contains("get") || mname1.contains("set")))
                             		{
                             			System.out.println("Hello3");
-                            			System.out.println("get"+(mname.contains(((VariableDeclarator)vvar).getId().toString()))+"----------"+mname1);
-                            			writer.print("+ ");
+                            			System.out.println("get"+(((VariableDeclarator)vvar).getId())+"----------"+mname1);
+                            			String get="get"+(((VariableDeclarator)vvar).getId());
+                            			String set="set"+(((VariableDeclarator)vvar).getId());
+                            			System.out.println(get+"--------------"+set);
+                            			
+                            			if(get==mname1 && set==mname1)
+                            			{
+                            				System.out.println("Hello4");
+                            				writer.print("+ ");
+                            			}
+                      
+                            			//writer.print("+ ");
                             		}
                             		else
                             		{
@@ -216,7 +264,7 @@ public class UmlParser {
                         			writer.print(((VariableDeclarator)vvar).getId());
                         			writer.print(":");
                         			writer.println(((FieldDeclaration) bvar).getType());
-                            		}
+                            		}*/
                     			}
                     			
                     			access=access+" "+((FieldDeclaration) bvar).getType()+" "+((VariableDeclarator)vvar).getId();
