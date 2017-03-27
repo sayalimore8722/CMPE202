@@ -243,7 +243,14 @@ public class UmlParser {
                             			getflag=false;
                             			setflag=false;
                         			}
-                        			
+                        			else
+                        			{
+                        				writer.print("-");
+                        				variabletype.put("VariableName",((VariableDeclarator)vvar).getId());
+                            			writer.print(((VariableDeclarator)vvar).getId());
+                            			writer.print(":");
+                            			writer.println(((FieldDeclaration) bvar).getType());	
+                        			}
                         			
                     			}
                     			
