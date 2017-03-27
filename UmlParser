@@ -232,39 +232,19 @@ public class UmlParser {
 
                             		}
                         			
+                        			if(getflag && setflag)
+                        			{
+                        				System.out.println("In both set get");
+                        				writer.print("+");
+                        				variabletype.put("VariableName",((VariableDeclarator)vvar).getId());
+                            			writer.print(((VariableDeclarator)vvar).getId());
+                            			writer.print(":");
+                            			writer.println(((FieldDeclaration) bvar).getType());
+                            			getflag=false;
+                            			setflag=false;
+                        			}
                         			
                         			
-                            			
-                            		/*for(String mname1:mname)
-                            		{
-                            			System.out.println("Hello2");
-                            			System.out.println(mname);*/
-                            			
-                            		/*if((mname1.contains("get") || mname1.contains("set")))
-                            		{
-                            			System.out.println("Hello3");
-                            			System.out.println("get"+(((VariableDeclarator)vvar).getId())+"----------"+mname1);
-                            			String get="get"+(((VariableDeclarator)vvar).getId());
-                            			String set="set"+(((VariableDeclarator)vvar).getId());
-                            			System.out.println(get+"--------------"+set);
-                            			
-                            			if(get==mname1 && set==mname1)
-                            			{
-                            				System.out.println("Hello4");
-                            				writer.print("+ ");
-                            			}
-                      
-                            			//writer.print("+ ");
-                            		}
-                            		else
-                            		{
-                            			writer.print("- ");	
-                            		}
-                            		variabletype.put("VariableName",((VariableDeclarator)vvar).getId());
-                        			writer.print(((VariableDeclarator)vvar).getId());
-                        			writer.print(":");
-                        			writer.println(((FieldDeclaration) bvar).getType());
-                            		}*/
                     			}
                     			
                     			access=access+" "+((FieldDeclaration) bvar).getType()+" "+((VariableDeclarator)vvar).getId();
