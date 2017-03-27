@@ -350,14 +350,14 @@ public class UmlParser {
                 	
                 	if(!mname.equals("main") && !mname.contains("get") && !mname.contains("set"))
                 	{
-                	writer.print(((MethodDeclaration)bvar).getType());
-                	writer.print(" ");
                 	writer.print(mname);
     				writer.print("(");
     				methodtype.put("MethodParameters",((MethodDeclaration)bvar).getParameters());
     				List<Parameter> methodpara=((MethodDeclaration)bvar).getParameters();
     				writer.print(((MethodDeclaration)bvar).getParameters().toString().replace(" ",":").replace("[","").replace("]",""));
-    				writer.println(")");
+    				writer.print(")");
+    				writer.print(":");
+    				writer.println(((MethodDeclaration)bvar).getType());
     				for(Parameter para:methodpara)
     				{
     					
