@@ -196,27 +196,25 @@ public class UmlParser {
                     				variabledec.put("VariableAccess","private");
                             		
                             		access="private";
-                            		System.out.println("Hello1");
-                            		System.out.println((((VariableDeclarator)vvar).getId()));
+                            		
+                            		
                             		String get="get"+(((VariableDeclarator)vvar).getId());
                         			String set="set"+(((VariableDeclarator)vvar).getId());
-                        			System.out.println(get+"--------------"+set);
+                        			
                         			
                         			for(String mname1:mname)
                             		{
                                		 if(get.compareToIgnoreCase(mname1)==0)
                             		 {
-                            		     System.out.println("get");
                             		     getflag=true;
                             		 }
                             		
                             		}
                         			for(String mname1:mname)
                             		{
-                        				if(set.compareToIgnoreCase(mname1)==0)
+                        			 if(set.compareToIgnoreCase(mname1)==0)
                                		 {
-                            			 System.out.println("set");
-                            			 setflag=true;
+                              			 setflag=true;
                             		 }
                                		
                             		}
