@@ -126,8 +126,7 @@ public class UmlParser {
             		writer.print(classDeclarInfo.get("Name"));
                 	writer.println("{");
             	}
-            	ClassOrInterfaceDeclaration classv=(ClassOrInterfaceDeclaration)types;
-            	List<BodyDeclaration> list1=classv.getMembers();
+            	
             	
             }
         }
