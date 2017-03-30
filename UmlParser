@@ -38,7 +38,6 @@ public class UmlParser {
 		{
 			if(fileobj.getName().endsWith(".java"))
 			{
-				System.out.println("Processing File----->> "+fileobj.getName());
 				FileInputStream in=new FileInputStream(fileobj);
 				 CompilationUnit cu = JavaParser.parse(in);
 	           	 String src=classParser(cu,writer);
@@ -141,7 +140,7 @@ public class UmlParser {
 		String forArray="",forArray1="";
 		String collect_relation_str="",instance_relation_str="";
 		boolean getflag=false,setflag=false;
-		int flag=0;
+		
 		HashMap<String,String> variabledec=new HashMap<String,String>();
 		HashMap<String,Object> variabletype=new HashMap<String,Object>();
 		
@@ -353,11 +352,8 @@ public class UmlParser {
             	}
             }
 		}
-		return dependency;
-			
+		return dependency;			
 	}
-	
-	
 }
 
 
