@@ -256,22 +256,19 @@ public class UmlParser {
                                 		String str2=str1.replace(">","");
                                 	 
                                 		collect_relation_str+=src+" "+"\"1\""+"--"+" \"many\" "+str2+System.lineSeparator();
-                                		System.out.println(collect_relation_str);
+                                		
                                 		forArray=src+str2;
                                 		forArray1=str2+src;
-                                		System.out.println(forArray);
-                                		System.out.println(forArray1);
+                                		
                                 		
                             		}
                         			else
                         			{
                         				collect_relation_str+=src+" "+"\"1\""+"--"+"\"1\" "+destClass+System.lineSeparator();
-                        				System.out.println(collect_relation_str);
+                        				
                         				forArray=src+destClass;
                         				forArray1=destClass+src;
-                        				System.out.println(forArray);
-                                		System.out.println(forArray1);
-                                			
+                        				
                         			}
                         			if(!(relation.contains(forArray)) || !(relation.contains(forArray1)))
                         			{
