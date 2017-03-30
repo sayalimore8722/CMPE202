@@ -27,7 +27,7 @@ public class UmlParser {
 	private static int relvariable = 0;
 	public static void main(String[] args) throws Exception {
       
-        String srcfolder="D:\\umlparser\\uml-parser-test-3";
+        String srcfolder="D:\\umlparser\\uml-parser-test-2";
 		File folder=new File(srcfolder);
 	
 		 PrintWriter writer = new PrintWriter("D:\\Uml.txt", "UTF-8") ;
@@ -204,37 +204,25 @@ public class UmlParser {
                         			
                         			for(String mname1:mname)
                             		{
-                        				System.out.println("Lowercase"+(mname1.toLowerCase()));
-                        				String lower=(mname1.toLowerCase());
-                            		 if(get.compareToIgnoreCase(mname1)==0)
+                               		 if(get.compareToIgnoreCase(mname1)==0)
                             		 {
                             		     System.out.println("get");
                             		     getflag=true;
                             		 }
-                            		 else
-                            		 {
-                            			  System.out.println("notget");
-                            		 }
+                            		
                             		}
                         			for(String mname1:mname)
                             		{
-                        				System.out.println("Lowercase"+(mname1.toLowerCase()));
-                        				String lower=(mname1.toLowerCase());
                         				if(set.compareToIgnoreCase(mname1)==0)
                                		 {
                             			 System.out.println("set");
                             			 setflag=true;
                             		 }
-                               		else
-                               		{
-                           			  System.out.println("notset");
-                               		}
-
+                               		
                             		}
                         			
                         			if(getflag && setflag)
                         			{
-                        				System.out.println("In both set get");
                         				writer.print("+");
                         				variabletype.put("VariableName",((VariableDeclarator)vvar).getId());
                             			writer.print(((VariableDeclarator)vvar).getId());
@@ -255,13 +243,6 @@ public class UmlParser {
                     			}
                     			
                     			access=access+" "+((FieldDeclaration) bvar).getType()+" "+((VariableDeclarator)vvar).getId();
-                    			System.out.println("Access----------------"+access);
-                    			variables.add(access);
-                    			for(String s:variables)
-                    			{
-                    				System.out.println("List-------"+s);
-                    			}
-                
                     		}
                     		else if(ftype instanceof ReferenceType)
                         	{
