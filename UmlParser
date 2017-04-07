@@ -370,7 +370,7 @@ public class UmlParser {
             	}
             }
 		}
-		return dependency;			
+					
 		private boolean isReferenceType(Type type) {
 			if ((type instanceof PrimitiveType) || (type instanceof ReferenceType
 					&& (type.toString().equals("String") || type.toString().contains("[]")))) {
