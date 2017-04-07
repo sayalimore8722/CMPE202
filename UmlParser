@@ -22,6 +22,8 @@ import com.github.javaparser.ast.type.PrimitiveType;
 import com.github.javaparser.ast.type.ReferenceType;
 import com.github.javaparser.ast.type.Type;
 
+import net.sourceforge.plantuml.GeneratedImage;
+import net.sourceforge.plantuml.SourceFileReader;
 import net.sourceforge.plantuml.SourceStringReader;
 
 public class UmlParser {
@@ -30,7 +32,7 @@ public class UmlParser {
 	private static int relvariable = 0;
 	public static void main(String[] args) throws Exception {
       
-        String srcfolder="D:\\umlparser\\uml-parser-test-2";
+        String srcfolder="D:\\umlparser\\uml-parser-test-1";
 		File folder=new File(srcfolder);
 	
 		 PrintWriter writer = new PrintWriter("D:\\Uml.txt", "UTF-8") ;
@@ -54,6 +56,8 @@ public class UmlParser {
         
 		writer.println("@enduml");
 		writer.close();
+		
+		
 		
 		SourceStringReader s = new SourceStringReader("D:\\Uml.txt");
 		try
@@ -368,9 +372,16 @@ public class UmlParser {
 		}
 		return dependency;			
 	}
-}
+
 
 
 
 	
 
+private String getCardinalityString(String cardinality){
+	if("".equals(cardinality)){
+		return "";
+	}
+	return " \"" + cardinality + "\" ";
+}
+}
