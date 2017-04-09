@@ -21,7 +21,6 @@ import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.PrimitiveType;
 import com.github.javaparser.ast.type.ReferenceType;
 import com.github.javaparser.ast.type.Type;
-
 import net.sourceforge.plantuml.GeneratedImage;
 import net.sourceforge.plantuml.SourceFileReader;
 import net.sourceforge.plantuml.SourceStringReader;
@@ -29,6 +28,7 @@ import net.sourceforge.plantuml.SourceStringReader;
 public class UmlParser {
 	public static ArrayList<String> relation=new ArrayList<String>();
 	public static ArrayList<String> variables=new ArrayList<String>();
+	public static ArrayList<String> gettersetter=new ArrayList<String>();
 	private static int relvariable = 0;
 	public static void main(String[] args) throws Exception {
       
@@ -153,6 +153,7 @@ public class UmlParser {
 	public static String variableParser(CompilationUnit cu,PrintWriter writer,String src)
 	{
 		ArrayList<String> mname=new ArrayList<String>();
+		
 		String destClass="";
 		String relation_str="";
 		String forArray="",forArray1="";
@@ -216,8 +217,8 @@ public class UmlParser {
                             		
                             		String get="get"+(((VariableDeclarator)vvar).getId());
                         			String set="set"+(((VariableDeclarator)vvar).getId());
-                        			
-                        			
+                        			gettersetter.add(get);
+                        			gettersetter.add(set);
                         			for(String mname1:mname)
                             		{
                                		 if(get.compareToIgnoreCase(mname1)==0)
