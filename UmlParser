@@ -32,7 +32,7 @@ public class UmlParser {
 	private static int relvariable = 0;
 	public static void main(String[] args) throws Exception {
       
-        String srcfolder="D:\\umlparser\\uml-parser-test-1";
+        String srcfolder="D:\\umlparser\\uml-parser-test-4";
 		File folder=new File(srcfolder);
 	
 		 PrintWriter writer = new PrintWriter("D:\\Uml.txt", "UTF-8") ;
@@ -357,7 +357,7 @@ public class UmlParser {
     					if(parav instanceof ReferenceType && !(parav.toString().contains("String")))
     					{
     						
-    						if(((ReferenceType) parav).getType() instanceof ClassOrInterfaceType)
+    						if((((ReferenceType) parav).getType() instanceof ClassOrInterfaceType ) && !((ClassOrInterfaceDeclaration)types).isInterface())
     						{
     							
     							dependency=src+"\"uses\" ..>"+para.getType();
@@ -370,13 +370,7 @@ public class UmlParser {
             	}
             }
 		}
-					
-		private boolean isReferenceType(Type type) {
-			if ((type instanceof PrimitiveType) || (type instanceof ReferenceType
-					&& (type.toString().equals("String") || type.toString().contains("[]")))) {
-				return false;
-			}
-			return true;
+		return dependency;			
+		
 		}
 	}
-}
