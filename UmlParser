@@ -33,7 +33,7 @@ public class UmlParser {
 	private static int relvariable = 0;
 	public static void main(String[] args) throws Exception {
       
-        String srcfolder="C:\\Users\\sayal\\Downloads\\test4";
+        String srcfolder="D:\\umlparser\\uml-parser-test-4";
 		File folder=new File(srcfolder);
 	
 		 PrintWriter writer = new PrintWriter("D:\\Uml.txt", "UTF-8") ;
@@ -166,28 +166,43 @@ public class UmlParser {
 		
 		
 		for (TypeDeclaration types : cu.getTypes()) {
+			System.out.println("helllo111");
 			if(types instanceof ClassOrInterfaceDeclaration)
             {
 				
             	ClassOrInterfaceDeclaration classv=(ClassOrInterfaceDeclaration)types;
             	List<BodyDeclaration> list1=classv.getMembers();
+            	System.out.println("helllo11");
             	for(BodyDeclaration bvar:list1)
             	{
+            		System.out.println("helllo1");
             		if(bvar instanceof MethodDeclaration)
             		{
             			mname.add(((MethodDeclaration)bvar).getName());
+            			System.out.println("helllo");
+            		}
+            		if(bvar instanceof ConstructorDeclaration)
+            		{
+        				System.out.println("helllo2");
+            			int a=((ConstructorDeclaration) bvar).getModifiers();
+            			System.out.println(a);
+            			if(a==1)
+            				writer.print("+ ");
+            			else if(a==2)
+            				writer.print("- ");
+            			System.out.println(((ConstructorDeclaration) bvar).getName());
+            			writer.print(((ConstructorDeclaration) bvar).getName());
+            			
+            			
             			
             		}
             	}
             	for(BodyDeclaration bvar:list1)
             	{
-            		if(bvar instanceof ConstructorDeclaration)
-            		{
-            			int a=((ConstructorDeclaration) bvar).getModifiers();
-            		}
             		
             		if(bvar instanceof FieldDeclaration)
             		{
+            			
             			String access="";
             			//Get Variable Access Specifier
             			int a=((FieldDeclaration) bvar).getModifiers();
