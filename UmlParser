@@ -193,7 +193,16 @@ public class UmlParser {
             			System.out.println(((ConstructorDeclaration) bvar).getName());
             			writer.print(((ConstructorDeclaration) bvar).getName());
             			
+            			writer.print("(");
+            			if(((ConstructorDeclaration) bvar).getParameters()!=null)
+            			{
+            			String[] s=new String[50];
+            			s=((ConstructorDeclaration) bvar).getParameters().toString().split(" ");
+            			System.out.println("************"+s[0]);
             			
+            			writer.print((((ConstructorDeclaration) bvar).getParameters()).toString().replace(" ",":").replace("[","").replace("]",""));
+            			}
+            			writer.println(")");
             			
             		}
             	}
