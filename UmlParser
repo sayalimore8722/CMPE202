@@ -371,7 +371,9 @@ public class UmlParser {
                 			{
                 					writer.print(((MethodDeclaration)bvar).getParameters().get(i).getId()+":"+((MethodDeclaration)bvar).getParameters().get(i).getType());
                 			}
-            				writer.println(")");
+            				writer.print(")");
+            				writer.print(":");
+            				writer.println(((MethodDeclaration)bvar).getType());
 
             			}
             			else if(a==2)
@@ -383,7 +385,9 @@ public class UmlParser {
                 			{
                 					writer.print(((MethodDeclaration)bvar).getParameters().get(i).getId()+":"+((MethodDeclaration)bvar).getParameters().get(i).getType());
                 			}
-            				writer.println(")");
+            				writer.print(")");
+            				writer.print(":");
+            				writer.println(((MethodDeclaration)bvar).getType());
             			}
             			
             			}
