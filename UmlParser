@@ -191,7 +191,7 @@ public class UmlParser {
             				writer.print("- ");
             			else
             				writer.print("+");
-            			System.out.println(((ConstructorDeclaration) bvar).getName());
+            			
             			writer.print(((ConstructorDeclaration) bvar).getName());
             			
             			writer.print("(");
@@ -336,11 +336,8 @@ public class UmlParser {
 		HashMap<String,String> methoddec=new HashMap<String,String>();
 		HashMap<String,Object> methodtype=new HashMap<String,Object>();
 		String dependency="";
-		
-		for(String a:gettersetter)
-		{
-			System.out.println(a);
-		}
+		String temp="";
+
 		
 		for (TypeDeclaration types : cu.getTypes()) {
 			if(types instanceof ClassOrInterfaceDeclaration)
@@ -355,6 +352,42 @@ public class UmlParser {
             		{
             		int a=((MethodDeclaration)bvar).getModifiers();
             		String mname=((MethodDeclaration)bvar).getName();
+            		
+            		for(String astr:gettersetter)
+            		{
+            			System.out.println("**********"+astr+"*********"+gettersetter.size());
+            			temp=astr;
+            		}
+            		
+            		   if(temp.compareToIgnoreCase(mname)!=0 && (mname.contains("get") || mname.contains("set")))
+            			{
+            			if(a==1)
+            			{
+            				
+            				writer.print("+ ");
+            				writer.print(mname);
+            				writer.print("(");
+            				for(int i =0; i<((((MethodDeclaration) bvar)).getParameters()).size();i++)
+                			{
+                					writer.print(((MethodDeclaration)bvar).getParameters().get(i).getId()+":"+((MethodDeclaration)bvar).getParameters().get(i).getType());
+                			}
+            				writer.println(")");
+
+            			}
+            			else if(a==2)
+            			{
+            				writer.print("- ");
+            				writer.print(mname);
+            				writer.print("(");
+            				for(int i =0; i<((((MethodDeclaration) bvar)).getParameters()).size();i++)
+                			{
+                					writer.print(((MethodDeclaration)bvar).getParameters().get(i).getId()+":"+((MethodDeclaration)bvar).getParameters().get(i).getType());
+                			}
+            				writer.println(")");
+            			}
+            			
+            			}
+            		
             		if(a==1 && !mname.contains("get") && !mname.contains("set"))
             		{
                 		methoddec.put("MethodAccess","public");
@@ -366,9 +399,9 @@ public class UmlParser {
                 		methoddec.put("MethodAccess","private");
                 		writer.print("- ");
             		}
-            		else
+            		else if(a!=1 && a!=2)
             		{
-            			writer.print("+");
+            			writer.print("+ ");
             		}
             		methodtype.put("MethodType",((MethodDeclaration)bvar).getType());
             		
@@ -382,7 +415,7 @@ public class UmlParser {
     				writer.print("(");
     				methodtype.put("MethodParameters",((MethodDeclaration)bvar).getParameters());
     				List<Parameter> methodpara=((MethodDeclaration)bvar).getParameters();
-    				System.out.println(((MethodDeclaration)bvar).getParameters().toString().replace(" ",":").replace("[","").replace("]",""));
+    				//System.out.println(((MethodDeclaration)bvar).getParameters().toString().replace(" ",":").replace("[","").replace("]",""));
     				//writer.print(((MethodDeclaration)bvar).getParameters().toString().replace(" ",":").replace("[","").replace("]",""));
     				for(int i =0; i<((((MethodDeclaration) bvar)).getParameters()).size();i++)
         			{
