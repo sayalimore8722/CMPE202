@@ -11,6 +11,7 @@ import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.BodyDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.EnumDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
@@ -32,7 +33,7 @@ public class UmlParser {
 	private static int relvariable = 0;
 	public static void main(String[] args) throws Exception {
       
-        String srcfolder="D:\\umlparser\\uml-parser-test-4";
+        String srcfolder="C:\\Users\\sayal\\Downloads\\test4";
 		File folder=new File(srcfolder);
 	
 		 PrintWriter writer = new PrintWriter("D:\\Uml.txt", "UTF-8") ;
@@ -180,6 +181,10 @@ public class UmlParser {
             	}
             	for(BodyDeclaration bvar:list1)
             	{
+            		if(bvar instanceof ConstructorDeclaration)
+            		{
+            			int a=((ConstructorDeclaration) bvar).getModifiers();
+            		}
             		
             		if(bvar instanceof FieldDeclaration)
             		{
@@ -311,6 +316,11 @@ public class UmlParser {
 		HashMap<String,Object> methodtype=new HashMap<String,Object>();
 		String dependency="";
 		
+		for(String a:gettersetter)
+		{
+			System.out.println(a);
+		}
+		
 		for (TypeDeclaration types : cu.getTypes()) {
 			if(types instanceof ClassOrInterfaceDeclaration)
             {
@@ -347,6 +357,7 @@ public class UmlParser {
     				writer.print("(");
     				methodtype.put("MethodParameters",((MethodDeclaration)bvar).getParameters());
     				List<Parameter> methodpara=((MethodDeclaration)bvar).getParameters();
+    				System.out.println(((MethodDeclaration)bvar).getParameters().toString().replace(" ",":").replace("[","").replace("]",""));
     				writer.print(((MethodDeclaration)bvar).getParameters().toString().replace(" ",":").replace("[","").replace("]",""));
     				writer.print(")");
     				writer.print(":");
