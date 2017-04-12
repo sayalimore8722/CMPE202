@@ -183,13 +183,14 @@ public class UmlParser {
             		}
             		if(bvar instanceof ConstructorDeclaration)
             		{
-        				System.out.println("helllo2");
             			int a=((ConstructorDeclaration) bvar).getModifiers();
-            			System.out.println(a);
+
             			if(a==1)
             				writer.print("+ ");
             			else if(a==2)
             				writer.print("- ");
+            			else
+            				writer.print("+");
             			System.out.println(((ConstructorDeclaration) bvar).getName());
             			writer.print(((ConstructorDeclaration) bvar).getName());
             			
@@ -365,6 +366,10 @@ public class UmlParser {
                 		methoddec.put("MethodAccess","private");
                 		writer.print("- ");
             		}
+            		else
+            		{
+            			writer.print("+");
+            		}
             		methodtype.put("MethodType",((MethodDeclaration)bvar).getType());
             		
             		
@@ -378,7 +383,11 @@ public class UmlParser {
     				methodtype.put("MethodParameters",((MethodDeclaration)bvar).getParameters());
     				List<Parameter> methodpara=((MethodDeclaration)bvar).getParameters();
     				System.out.println(((MethodDeclaration)bvar).getParameters().toString().replace(" ",":").replace("[","").replace("]",""));
-    				writer.print(((MethodDeclaration)bvar).getParameters().toString().replace(" ",":").replace("[","").replace("]",""));
+    				//writer.print(((MethodDeclaration)bvar).getParameters().toString().replace(" ",":").replace("[","").replace("]",""));
+    				for(int i =0; i<((((MethodDeclaration) bvar)).getParameters()).size();i++)
+        			{
+        					writer.print(((MethodDeclaration)bvar).getParameters().get(i).getId()+":"+((MethodDeclaration)bvar).getParameters().get(i).getType());
+        			}
     				writer.print(")");
     				writer.print(":");
     				writer.println(((MethodDeclaration)bvar).getType());
