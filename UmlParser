@@ -33,6 +33,7 @@ public class UmlParser {
 	public static ArrayList<String> variables=new ArrayList<String>();
 	public static ArrayList<String> gettersetter=new ArrayList<String>();
 	public static 	ArrayList<String> interfacemethods=new ArrayList<String>();
+	public static 	List<Parameter> constructorpara=new ArrayList<Parameter>();
 	private static int relvariable = 0;
 	public static void main(String[] args) throws Exception {
       
@@ -239,7 +240,7 @@ public class UmlParser {
             				writer.print("+");
             			
             			writer.print(((ConstructorDeclaration) bvar).getName());
-            			
+            		    constructorpara=((ConstructorDeclaration)bvar).getParameters();
             			writer.print("(");
             			for(int i =0; i<((((ConstructorDeclaration) bvar)).getParameters()).size();i++)
             			{
@@ -361,8 +362,25 @@ public class UmlParser {
                         			}
                         			if(!(relation.contains(forArray)) || !(relation.contains(forArray1)))
                         			{
-                        				relation_str=collect_relation_str;
+                        				relation_str=collect_relation_str+System.lineSeparator();
                         			}
+                        
+                        				for(Parameter para:constructorpara)
+                        				{
+                        				    System.out.println("Done???");	
+                        					Type parav=para.getType();
+                        					System.out.println("Para type is........."+parav);
+                        					if(parav instanceof ReferenceType && !(parav.toString().contains("String")))
+                        					{
+                        						System.out.println("Done1???");
+                        						if((((ReferenceType) parav).getType() instanceof ClassOrInterfaceType ) /*&& !((ClassOrInterfaceDeclaration)types).isInterface()*/)
+                        						{
+                        							System.out.println("Done2???");
+                        							relation_str+=src+"\"uses\" ..>"+para.getType();
+                        							System.out.println(";;;;;;;;;;;;;;;;;;"+relation_str);
+                        						}
+                        					}
+                        				}
                         			
                         			relation.add(forArray);
                         			relation.add(forArray1);
@@ -477,10 +495,6 @@ public class UmlParser {
     				writer.print("(");
     				methodtype.put("MethodParameters",((MethodDeclaration)bvar).getParameters());
     				List<Parameter> methodpara=((MethodDeclaration)bvar).getParameters();
-    				for(Parameter strp:methodpara)
-    				{
-    					System.out.println("PARAMETERS=========="+strp);
-    				}
     				
     				for(int i =0; i<((((MethodDeclaration) bvar)).getParameters()).size();i++)
         			{
@@ -509,6 +523,8 @@ public class UmlParser {
                 	BlockStmt method_body =((MethodDeclaration)bvar).getBody();
                 	 if (method_body != null) {
                 		  List<com.github.javaparser.ast.stmt.Statement> method_Statements = method_body.getStmts();
+                		  if(method_Statements!=null)
+                		  {
                 		  for (com.github.javaparser.ast.stmt.Statement st: method_Statements) {
                               String tmpSt = st.toString();
                               if (tmpSt.contains("new ")) {
@@ -516,6 +532,7 @@ public class UmlParser {
                             	  dependency=src+"\"uses\" ..>"+tmpSt.split(" ")[0];
                               }
                 	 }
+                    }
             		}
             	}
             	}
