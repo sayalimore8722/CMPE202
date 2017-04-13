@@ -380,7 +380,7 @@ public class UmlParser {
 		HashMap<String,String> methoddec=new HashMap<String,String>();
 		HashMap<String,Object> methodtype=new HashMap<String,Object>();
 		String dependency="",temp="",itemp="";
-	
+		boolean flag=false;
 
 		System.out.println("in method");
 		
@@ -405,12 +405,20 @@ public class UmlParser {
             		}
             		for(String istr:interfacemethods)
             		{
-            			itemp=istr;
+    
+            		
             			System.out.println("??????????"+itemp);
+            			//********************************************************************************************************
+            			if(mname.compareToIgnoreCase(istr)==0)
+            				flag=true;
+            			else
+            				flag=false;
+            				
             		}
             		
-            		   if(temp.compareToIgnoreCase(mname)!=0 && itemp.compareToIgnoreCase(mname)!=0 && (mname.contains("get") || mname.contains("set")))
+            		   if(temp.compareToIgnoreCase(mname)!=0 && flag==false && (mname.contains("get") || mname.contains("set")))
             			{
+            			   System.out.println(itemp+"-----***-----"+mname);
             			if(a==1)
             			{
             				
@@ -463,8 +471,9 @@ public class UmlParser {
                 	methoddec.put("MethodName",((MethodDeclaration)bvar).getName());
                 	
                 	
-                	if(!mname.equals("main") && !mname.contains("get") && !mname.contains("set") && itemp.compareToIgnoreCase(mname)!=0)
+                	if(!mname.equals("main") && !mname.contains("get") && !mname.contains("set") && flag==false)
                 	{
+                		  System.out.println(itemp+"----/////-----"+mname);
                 	writer.print(mname);
     				writer.print("(");
     				methodtype.put("MethodParameters",((MethodDeclaration)bvar).getParameters());
