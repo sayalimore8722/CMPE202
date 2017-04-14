@@ -37,7 +37,7 @@ public class UmlParser {
 	private static int relvariable = 0;
 	public static void main(String[] args) throws Exception {
       
-        String srcfolder="D:\\umlparser\\uml-parser-test-4";
+        String srcfolder="D:\\umlparser\\uml-parser-test-5";
 		File folder=new File(srcfolder);
 	
 		 PrintWriter writer = new PrintWriter("D:\\Uml.txt", "UTF-8") ;
@@ -459,7 +459,7 @@ public class UmlParser {
             				writer.println(((MethodDeclaration)bvar).getType());
 
             			}
-            			else if(a==2)
+            			/*else if(a==2)
             			{
             				 System.out.println("Zollll3"); 
             				writer.print("- ");
@@ -472,7 +472,7 @@ public class UmlParser {
             				writer.print(")");
             				writer.print(":");
             				writer.println(((MethodDeclaration)bvar).getType());
-            			}
+            			}*/
             			
             			}
             		
@@ -482,11 +482,11 @@ public class UmlParser {
             			writer.print("+ ");
             		}
           
-            		else if(a==2 && !mname.contains("get") && !mname.contains("set") && itemp.compareToIgnoreCase(mname)!=0 /*&& flag!=true*/)
+            		/*else if(a==2 && !mname.contains("get") && !mname.contains("set") && itemp.compareToIgnoreCase(mname)!=0 /*&& flag!=true)
             		{
                 		methoddec.put("MethodAccess","private");
                 		writer.print("- ");
-            		}
+            		}*/
             		else if(a!=1 && a!=2)
             		{
             			writer.print("+ ");
@@ -497,7 +497,7 @@ public class UmlParser {
                 	methoddec.put("MethodName",((MethodDeclaration)bvar).getName());
                 	
                 	
-                	if(!mname.contains("get") && !mname.contains("set") /*&& flag!=true*/)
+                	if(!mname.contains("get") && !mname.contains("set") && a!=2)
                 	{
                 	
                 	writer.print(mname);
@@ -519,20 +519,6 @@ public class UmlParser {
     					
     					if(parav instanceof ReferenceType && !(parav.toString().contains("String")))
     					{
-    					 
-    					    //System.out.println(src+para.getType());
-    						//if(interface_names.contains(parav.toString()) && (((ReferenceType) parav).getType() instanceof ClassOrInterfaceType ) && !((ClassOrInterfaceDeclaration)types).isInterface())
-    						/*if(interface_names.contains(para.getType().toString()) && interface_names.contains(src) == false)
-    						{
-    							dependency=src+"\"uses\" ..>"+para.getType();
-    							
-    						}*/
-    					    if(interface_names.contains(src) == false){
-    					    	System.out.println(src);
-    					    }
-    					    if(interface_names.contains(para.getType().toString())){
-    					    	System.out.println(para.getType());
-    					    }
     					    if(interface_names.contains(src) == false && interface_names.contains(para.getType().toString())){
     					    	dependency=src+" \"uses\" ..> "+para.getType();
     					    }
