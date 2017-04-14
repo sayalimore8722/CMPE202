@@ -33,6 +33,7 @@ public class UmlParser {
 	public static ArrayList<String> variables=new ArrayList<String>();
 	public static ArrayList<String> gettersetter=new ArrayList<String>();
 	public static 	ArrayList<String> interfacemethods=new ArrayList<String>();
+	public static 	ArrayList<String> interface_names=new ArrayList<String>();
 	private static int relvariable = 0;
 	public static void main(String[] args) throws Exception {
       
@@ -53,6 +54,11 @@ public class UmlParser {
 					
 				}
 			}
+		 for(String s:interface_names)
+			{
+				System.out.println(s);
+			}
+			
 		for(File fileobj:folder.listFiles())
 		{
 			if(fileobj.getName().endsWith(".java"))
@@ -89,6 +95,7 @@ public class UmlParser {
             {
             	if(((ClassOrInterfaceDeclaration)types).isInterface())
             	{
+            		interface_names.add(types.getName());
             	ClassOrInterfaceDeclaration classv=(ClassOrInterfaceDeclaration)types;
 
 				List<BodyDeclaration> list1=classv.getMembers();
@@ -515,15 +522,11 @@ public class UmlParser {
     					if(parav instanceof ReferenceType && !(parav.toString().contains("String")))
     					{
     					 
+    					    
     						if((((ReferenceType) parav).getType() instanceof ClassOrInterfaceType ) && !((ClassOrInterfaceDeclaration)types).isInterface())
     						{
-    					
     							dependency=src+"\"uses\" ..>"+para.getType();
-    							Type s=((ReferenceType)parav).getType();
-    							if(!((ClassOrInterfaceDeclaration)s).isInterface())
-    							{
-    								
-    							}
+    							
     						}
     					}
     				}
