@@ -37,7 +37,7 @@ public class UmlParser {
 	private static int relvariable = 0;
 	public static void main(String[] args) throws Exception {
       
-        String srcfolder="D:\\umlparser\\uml-parser-test-4";
+        String srcfolder="D:\\umlparser\\uml-parser-test-3";
 		File folder=new File(srcfolder);
 	
 		 PrintWriter writer = new PrintWriter("D:\\Uml.txt", "UTF-8") ;
@@ -445,7 +445,7 @@ public class UmlParser {
             				flag=false;
             		}*/
             		
-            		   if(flag=false && ((mname.contains("get") || mname.contains("set"))))
+            		   /*if(flag=false && ((mname.contains("get") || mname.contains("set"))))
             			{
             			  System.out.println("***********"+mname);
             			  System.out.println("Zollll"); 
@@ -467,7 +467,7 @@ public class UmlParser {
             			
             			}
             		   
-            		   else if((gettersetter.contains(mname.toLowerCase())==false) && ((mname.contains("get") || mname.contains("set"))))
+            		   else */if((gettersetter.contains(mname.toLowerCase())==false) && ((mname.contains("get") || mname.contains("set"))))
             			{
             			  System.out.println(temp+"***********"+mname);
             			  System.out.println("Zollll4"); 
@@ -528,8 +528,10 @@ public class UmlParser {
                 	
                 	if(!mname.contains("get") && !mname.contains("set") && a!=2)
                 	{
-                	
+                	if(a==9)
+                		writer.print("{static} ");
                 	writer.print(mname);
+                	
     				writer.print("(");
     				methodtype.put("MethodParameters",((MethodDeclaration)bvar).getParameters());
     				List<Parameter> methodpara=((MethodDeclaration)bvar).getParameters();
