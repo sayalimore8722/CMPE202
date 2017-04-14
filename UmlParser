@@ -33,11 +33,10 @@ public class UmlParser {
 	public static ArrayList<String> variables=new ArrayList<String>();
 	public static ArrayList<String> gettersetter=new ArrayList<String>();
 	public static 	ArrayList<String> interfacemethods=new ArrayList<String>();
-	public static 	List<Parameter> constructorpara=new ArrayList<Parameter>();
 	private static int relvariable = 0;
 	public static void main(String[] args) throws Exception {
       
-        String srcfolder="D:\\umlparser\\uml-parser-test-5";
+        String srcfolder="D:\\umlparser\\uml-parser-test-4";
 		File folder=new File(srcfolder);
 	
 		 PrintWriter writer = new PrintWriter("D:\\Uml.txt", "UTF-8") ;
@@ -51,10 +50,7 @@ public class UmlParser {
 					FileInputStream in=new FileInputStream(fileobj);
 					 CompilationUnit cu = JavaParser.parse(in);
 					interfaceParser(cu,writer);
-					for(String istr:interfacemethods)
-					{
-						System.out.println("/////////"+istr);
-					}
+					
 				}
 			}
 		for(File fileobj:folder.listFiles())
@@ -76,19 +72,14 @@ public class UmlParser {
 		writer.println("@enduml");
 		writer.close();
 		
+		String srcfolder1="D:\\Uml.txt";
+		File folder1=new File(srcfolder1);
+	
+		SourceFileReader reader = new SourceFileReader(folder1);
+		List<GeneratedImage> list = reader.getGeneratedImages();
+		// Generated files
+		File png = list.get(0).getPngFile();
 		
-		
-		SourceStringReader s = new SourceStringReader("D:\\Uml.txt");
-		try
-		{
-			FileOutputStream f = new FileOutputStream ("D:\\Image.png");
-			s.generateImage(f);
-			f.close();
-	 
-		}
-		catch (Exception e){
-			System.out.println(e);
-		}
     }
 
 	public static void interfaceParser(CompilationUnit cu,PrintWriter writer)
@@ -103,13 +94,10 @@ public class UmlParser {
 				List<BodyDeclaration> list1=classv.getMembers();
             	for(BodyDeclaration bvar:list1)
             	{
-            		
-            		System.out.println("Int1");
             		if(bvar instanceof MethodDeclaration)
             		{
             			String mname=(((MethodDeclaration)bvar).getName());
-            			System.out.println("Int2");
-            			System.out.println("++++++++++++++++++++"+mname);
+            			
             			interfacemethods.add(mname);
             			
             		}
@@ -127,7 +115,7 @@ public class UmlParser {
 		HashMap<String,String> classorinterface=new HashMap<String,String>();
 	
 			
-	System.out.println("in class");
+	
 			
 		for (TypeDeclaration types : cu.getTypes()) {
             if(types instanceof ClassOrInterfaceDeclaration)
@@ -201,7 +189,7 @@ public class UmlParser {
 	{
 		ArrayList<String> mname=new ArrayList<String>();
 		
-		String destClass="";
+		String destClass="",relation_str1="";
 		String relation_str="";
 		String forArray="",forArray1="";
 		String collect_relation_str="",instance_relation_str="";
@@ -209,24 +197,24 @@ public class UmlParser {
 		
 		HashMap<String,String> variabledec=new HashMap<String,String>();
 		HashMap<String,Object> variabletype=new HashMap<String,Object>();
+		//List<Parameter> constructorpara=new ArrayList<Parameter>();
 		
-		System.out.println("in variable");
 		
 		for (TypeDeclaration types : cu.getTypes()) {
-			System.out.println("helllo111");
+			
 			if(types instanceof ClassOrInterfaceDeclaration)
             {
 				
             	ClassOrInterfaceDeclaration classv=(ClassOrInterfaceDeclaration)types;
             	List<BodyDeclaration> list1=classv.getMembers();
-            	System.out.println("helllo11");
+            	
             	for(BodyDeclaration bvar:list1)
             	{
-            		System.out.println("helllo1");
+            		
             		if(bvar instanceof MethodDeclaration)
             		{
             			mname.add(((MethodDeclaration)bvar).getName());
-            			System.out.println("helllo");
+            			
             		}
             		if(bvar instanceof ConstructorDeclaration)
             		{
@@ -240,14 +228,31 @@ public class UmlParser {
             				writer.print("+");
             			
             			writer.print(((ConstructorDeclaration) bvar).getName());
-            		    constructorpara=((ConstructorDeclaration)bvar).getParameters();
+            		    List<Parameter> constructorpara=((ConstructorDeclaration)bvar).getParameters();
             			writer.print("(");
             			for(int i =0; i<((((ConstructorDeclaration) bvar)).getParameters()).size();i++)
             			{
             					writer.print(((ConstructorDeclaration)bvar).getParameters().get(i).getId()+":"+((ConstructorDeclaration)bvar).getParameters().get(i).getType());
             			}
             			writer.println(")");
+            			for(Parameter para:constructorpara)
+        				{
+        				   	
+        					Type parav=para.getType();
+        					
+        					if(parav instanceof ReferenceType && !(parav.toString().contains("String")))
+        					{
+        					
+        						if((((ReferenceType) parav).getType() instanceof ClassOrInterfaceType ) /*&& !((ClassOrInterfaceDeclaration)types).isInterface()*/)
+        						{
+        							
+        							relation_str1=src+"\"uses\" ..>"+para.getType()+System.lineSeparator();
+        							
+        						}
+        					}
+        				}
             			
+            			System.out.println(";;;;;;;;;;;;;;;;;;"+relation_str1);
             		}
             	}
             	for(BodyDeclaration bvar:list1)
@@ -265,7 +270,18 @@ public class UmlParser {
                     	Type ftype=((FieldDeclaration)bvar).getType();
                     	FieldDeclaration var=(FieldDeclaration)bvar;
                     	List<VariableDeclarator> varlist=var.getVariables();
+                    	for(VariableDeclarator vvar:varlist)
+                    	{
+                    	String get="get"+(((VariableDeclarator)vvar).getId());
+            			String set="set"+(((VariableDeclarator)vvar).getId());
+            			gettersetter.add(get);
+            			gettersetter.add(set);
+            		    }
                     	
+                    	for(String r:gettersetter)
+                    	{
+                    		System.out.println("************"+r);
+                    	}
                     	for(VariableDeclarator vvar:varlist)
                     	{
                     		destClass=(((FieldDeclaration) bvar).getType()).toString();
@@ -280,6 +296,7 @@ public class UmlParser {
                         			writer.print(((VariableDeclarator)vvar).getId());
                         			writer.print(":");
                         			writer.println(((FieldDeclaration) bvar).getType());
+                        			
                     			}
                     			else if(a==2)
                     			{
@@ -287,11 +304,9 @@ public class UmlParser {
                             		
                             		access="private";
                             		
-                            		
                             		String get="get"+(((VariableDeclarator)vvar).getId());
                         			String set="set"+(((VariableDeclarator)vvar).getId());
-                        			gettersetter.add(get);
-                        			gettersetter.add(set);
+                            		
                         			for(String mname1:mname)
                             		{
                                		 if(get.compareToIgnoreCase(mname1)==0)
@@ -365,22 +380,7 @@ public class UmlParser {
                         				relation_str=collect_relation_str+System.lineSeparator();
                         			}
                         
-                        				for(Parameter para:constructorpara)
-                        				{
-                        				    System.out.println("Done???");	
-                        					Type parav=para.getType();
-                        					System.out.println("Para type is........."+parav);
-                        					if(parav instanceof ReferenceType && !(parav.toString().contains("String")))
-                        					{
-                        						System.out.println("Done1???");
-                        						if((((ReferenceType) parav).getType() instanceof ClassOrInterfaceType ) /*&& !((ClassOrInterfaceDeclaration)types).isInterface()*/)
-                        						{
-                        							System.out.println("Done2???");
-                        							relation_str+=src+"\"uses\" ..>"+para.getType();
-                        							System.out.println(";;;;;;;;;;;;;;;;;;"+relation_str);
-                        						}
-                        					}
-                        				}
+                        		
                         			
                         			relation.add(forArray);
                         			relation.add(forArray1);
@@ -392,7 +392,7 @@ public class UmlParser {
             	}    	
 		}
 		}
-		return relation_str;
+		return (relation_str+=relation_str1);
 		
 }
 	public static String methodParser(CompilationUnit cu,PrintWriter writer,String src)
@@ -402,7 +402,7 @@ public class UmlParser {
 		String dependency="",temp="",itemp="";
 		boolean flag=false;
 
-		System.out.println("in method");
+		
 		
 		for (TypeDeclaration types : cu.getTypes()) {
 			if(types instanceof ClassOrInterfaceDeclaration)
@@ -420,25 +420,28 @@ public class UmlParser {
             		
             		for(String astr:gettersetter)
             		{
-            			System.out.println("**********"+astr+"*********"+gettersetter.size());
-            			temp=astr;
+            			if(mname.compareToIgnoreCase(astr)==0)
+            				flag=true;
+            			else 
+            				flag=false;
             		}
-            		for(String istr:interfacemethods)
+            		/*for(String istr:interfacemethods)
             		{
-            			System.out.println(istr+"/////////***********************//////////"+mname);
+            			
             			//********************************************************************************************************
             			if(mname.compareToIgnoreCase(istr)==0)
             				flag=true;
             			else
             				flag=false;
-            		}
+            		}*/
             		
-            		   if(temp.compareToIgnoreCase(mname)!=0 /*&& flag!=true*/ && (mname.contains("get") || mname.contains("set")))
+            		   if(flag=false && ((mname.contains("get") || mname.contains("set"))))
             			{
-            			   System.out.println(itemp+"-----***-----"+mname);
+            			  System.out.println(temp+"***********"+mname);
+            			  System.out.println("Zollll"); 
             			if(a==1)
             			{
-            				
+            				 System.out.println("Zollll2"); 
             				writer.print("+ ");
             				writer.print(mname);
             				writer.print("(");
@@ -453,6 +456,7 @@ public class UmlParser {
             			}
             			else if(a==2)
             			{
+            				 System.out.println("Zollll3"); 
             				writer.print("- ");
             				writer.print(mname);
             				writer.print("(");
@@ -490,7 +494,7 @@ public class UmlParser {
                 	
                 	if(!mname.contains("get") && !mname.contains("set") /*&& flag!=true*/)
                 	{
-                	System.out.println(itemp+"----/////-----"+mname);
+                	
                 	writer.print(mname);
     				writer.print("(");
     				methodtype.put("MethodParameters",((MethodDeclaration)bvar).getParameters());
@@ -505,16 +509,21 @@ public class UmlParser {
     				writer.println(((MethodDeclaration)bvar).getType());
     				for(Parameter para:methodpara)
     				{
-    				    System.out.println("Done???");	
+    				    
     					Type parav=para.getType();
-    					System.out.println("Para type is........."+parav);
+    					
     					if(parav instanceof ReferenceType && !(parav.toString().contains("String")))
     					{
-    						System.out.println("Done1???");
-    						if((((ReferenceType) parav).getType() instanceof ClassOrInterfaceType ) /*&& !((ClassOrInterfaceDeclaration)types).isInterface()*/)
+    					 
+    						if((((ReferenceType) parav).getType() instanceof ClassOrInterfaceType ) && !((ClassOrInterfaceDeclaration)types).isInterface())
     						{
-    							System.out.println("Done2???");
+    					
     							dependency=src+"\"uses\" ..>"+para.getType();
+    							Type s=((ReferenceType)parav).getType();
+    							if(!((ClassOrInterfaceDeclaration)s).isInterface())
+    							{
+    								
+    							}
     						}
     					}
     				}
@@ -528,7 +537,7 @@ public class UmlParser {
                 		  for (com.github.javaparser.ast.stmt.Statement st: method_Statements) {
                               String tmpSt = st.toString();
                               if (tmpSt.contains("new ")) {
-                            	  System.out.println(tmpSt.split(" ")[0]);
+                            	  
                             	  dependency=src+"\"uses\" ..>"+tmpSt.split(" ")[0];
                               }
                 	 }
