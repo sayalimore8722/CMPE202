@@ -37,7 +37,7 @@ public class UmlParser {
 	private static int relvariable = 0;
 	public static void main(String[] args) throws Exception {
       
-        String srcfolder="D:\\umlparser\\uml-parser-test-5";
+        String srcfolder="D:\\umlparser\\uml-parser-test-4";
 		File folder=new File(srcfolder);
 	
 		 PrintWriter writer = new PrintWriter("D:\\Uml.txt", "UTF-8") ;
@@ -397,6 +397,7 @@ public class UmlParser {
             	}    	
 		}
 		}
+		System.out.println("-------------------------------------------------");
 		return (relation_str+=relation_str1);
 		
 }
@@ -425,11 +426,15 @@ public class UmlParser {
             		
             		for(String astr:gettersetter)
             		{
-            			if(mname.compareToIgnoreCase(astr)==0)
+            			System.out.println(astr);
+            		}
+            			if(gettersetter.contains(mname))
             				flag=true;
             			else 
             				flag=false;
-            		}
+            		//}
+            		
+            		
             		/*for(String istr:interfacemethods)
             		{
             			
@@ -442,7 +447,7 @@ public class UmlParser {
             		
             		   if(flag=false && ((mname.contains("get") || mname.contains("set"))))
             			{
-            			  System.out.println(temp+"***********"+mname);
+            			  System.out.println("***********"+mname);
             			  System.out.println("Zollll"); 
             			if(a==1)
             			{
@@ -459,6 +464,30 @@ public class UmlParser {
             				writer.println(((MethodDeclaration)bvar).getType());
 
             			}
+            			
+            			}
+            		   
+            		   else if((gettersetter.contains(mname.toLowerCase())==false) && ((mname.contains("get") || mname.contains("set"))))
+            			{
+            			  System.out.println(temp+"***********"+mname);
+            			  System.out.println("Zollll4"); 
+            			if(a==1)
+            			{
+            				 System.out.println("Zollll5"); 
+            				writer.print("+ ");
+            				writer.print(mname);
+            				writer.print("(");
+            				for(int i =0; i<((((MethodDeclaration) bvar)).getParameters()).size();i++)
+                			{
+                					writer.print(((MethodDeclaration)bvar).getParameters().get(i).getId()+":"+((MethodDeclaration)bvar).getParameters().get(i).getType());
+                			}
+            				writer.print(")");
+            				writer.print(":");
+            				writer.println(((MethodDeclaration)bvar).getType());
+
+            			}
+            			}
+
             			/*else if(a==2)
             			{
             				 System.out.println("Zollll3"); 
@@ -472,9 +501,9 @@ public class UmlParser {
             				writer.print(")");
             				writer.print(":");
             				writer.println(((MethodDeclaration)bvar).getType());
-            			}*/
-            			
             			}
+            			
+            			}*/
             		
             		if(a==1 && !mname.contains("get") && !mname.contains("set") && itemp.compareToIgnoreCase(mname)!=0 /*&& flag!=true*/)
             		{
