@@ -1,5 +1,4 @@
 
-
 import java.util.List;
 import java.beans.Statement;
 import java.io.File;
@@ -274,7 +273,6 @@ public class UmlParser {
         					}
         				}
             			
-            			System.out.println(";;;;;;;;;;;;;;;;;;"+relation_str1);
             		}
             	}
             	for(BodyDeclaration bvar:list1)
@@ -300,10 +298,7 @@ public class UmlParser {
             			gettersetter.add(set);
             		    }
                     	
-                    	for(String r:gettersetter)
-                    	{
-                    		System.out.println("************"+r);
-                    	}
+                    	
                     	for(VariableDeclarator vvar:varlist)
                     	{
                     		destClass=(((FieldDeclaration) bvar).getType()).toString();
@@ -414,7 +409,7 @@ public class UmlParser {
             	}    	
 		}
 		}
-		System.out.println("-------------------------------------------------");
+
 		return (relation_str+=relation_str1);
 		
 }
@@ -486,11 +481,10 @@ public class UmlParser {
             		   
             		   else */if((gettersetter.contains(mname.toLowerCase())==false) && ((mname.contains("get") || mname.contains("set"))))
             			{
-            			  System.out.println(temp+"***********"+mname);
-            			  System.out.println("Zollll4"); 
+            			
             			if(a==1)
             			{
-            				 System.out.println("Zollll5"); 
+            				
             				writer.print("+ ");
             				writer.print(mname);
             				writer.print("(");
@@ -570,7 +564,7 @@ public class UmlParser {
     					    if(interface_names.contains(src) == false && interface_names.contains(para.getType().toString())){
     					    	dependency=src+" \"uses\" ..> "+para.getType();
     					    }
-    					    System.out.println(dependency);
+    					  
     					}
     				}
                 	}
