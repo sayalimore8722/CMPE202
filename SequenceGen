@@ -38,6 +38,14 @@ public class SequenceDiagram {
 				}
 				
 			}
+		 for(File fileobj:folder.listFiles())
+			{
+			 if(fileobj.getName().endsWith(".java"))
+				{
+				 FileInputStream in = new FileInputStream(fileobj);
+				 CompilationUnit cu = JavaParser.parse(in);
+				}
+			}
 		 for(String a:filePaths)
 		 {
 			 System.out.println(a);
